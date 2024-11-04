@@ -1,5 +1,5 @@
-import { View, StyleSheet, FlatList } from "react-native"
-import { TextInput, Button, Card, Text, IconButton } from "react-native-paper";
+import { View, StyleSheet } from "react-native"
+import { TextInput, Button, Card, Text, IconButton, Snackbar } from "react-native-paper";
 import { useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 
@@ -7,6 +7,9 @@ export default function SearchSeries() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const handleFetch = () => {
     setLoading(true);
@@ -17,7 +20,16 @@ export default function SearchSeries() {
 
         return response.json();
       })
-      .then(data => setContent(data))
+      .then(data => {
+        if (data.Title) {
+          setContent(data)
+        }
+        else {
+          // OMDb still returns a json if it can't find anything with a title, but the json does have only Response and Error keys.
+          setVisible(true);
+          return
+        }
+      })
       .catch(err => {
         console.error(err);
       })
@@ -58,6 +70,15 @@ export default function SearchSeries() {
           </Card.Actions>
         </Card>
         : null}
+
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        duration={3000}
+      >
+        No results found.
+      </Snackbar>
+
     </View>
   )
 }
