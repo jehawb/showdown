@@ -1,5 +1,5 @@
-import { View, StyleSheet } from "react-native"
-import { TextInput, Button, Card, Text, IconButton, Snackbar } from "react-native-paper";
+import { View, StyleSheet, Image } from "react-native"
+import { TextInput, Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
 import { useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 
@@ -8,12 +8,13 @@ export default function SearchSeries() {
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
 
   const onDismissSnackBar = () => setVisible(false);
 
   const handleFetch = () => {
     setLoading(true);
-    fetch(`https://www.omdbapi.com/?apikey=${process.env.EXPO_PUBLIC_OMDB_API_KEY}&t=${title}`)
+    fetch(`https://www.omdbapi.com/?apikey=${process.env.EXPO_PUBLIC_OMDB_API_KEY}&t=${title}&plot=full`)
       .then(response => {
         if (!response.ok)
           throw new Error("Error in fetch: " + response.statusText);
@@ -21,11 +22,12 @@ export default function SearchSeries() {
         return response.json();
       })
       .then(data => {
+        // OMDb still returns a json if it can't find anything with a title, but the json does have only Response and Error keys.
         if (data.Title) {
           setContent(data)
         }
         else {
-          // OMDb still returns a json if it can't find anything with a title, but the json does have only Response and Error keys.
+          setSnackbarText('No results found.')
           setVisible(true);
           return
         }
@@ -36,12 +38,16 @@ export default function SearchSeries() {
       .finally(() => setLoading(false))
   }
 
-  const handleBrowse = async (url) => {
+  const handleBrowse = async (imdbID) => {
     try {
-      let result = await WebBrowser.openBrowserAsync(url);
+      let result = await WebBrowser.openBrowserAsync(`https://www.imdb.com/title/${imdbID}/`);
     } catch (error) {
       console.error('Error occurred while opening the browser:', error);
     }
+  }
+
+  const handleAddList = () => {
+
   }
 
   return (
@@ -59,14 +65,34 @@ export default function SearchSeries() {
       </Button>
 
       {content ?
-        <Card style={{ marginBottom: 10 }}>
-          <Card.Title title={content.Title} titleVariant="titleMedium" />
-          <Card.Content>
-            <Text variant="bodyMedium">{content.Plot}</Text>
+        <Card style={{ marginTop: 15, width: '95%' }}>
+          <Card.Title
+            title={content.Title}
+            titleVariant="titleMedium"
+          />
+          <Card.Content style={{ flexDirection: 'column', alignItems: "flex-start" }}>
+            <View style={{ flexDirection: 'row', alignItems: "flex-start" }}>
+              <Image
+                source={{ uri: content.Poster }}
+                style={{
+                  width: 150,
+                  height: 250,
+                  resizeMode: 'contain',
+                  marginRight: 15
+                }}
+              />
+              <Text variant="bodyMedium"
+                numberOfLines={15}
+                ellipsizeMode="tail"
+                style={{ flex: 1 }}>{content.Plot}
+              </Text>
+            </View>
+            <Text>IMDB rating: {content.imdbRating}</Text>
+            <Text>Metacritic score: {content.Metascore}</Text>
           </Card.Content>
           <Card.Actions>
-            <IconButton icon="web" onPress={() => handleBrowse(content.Poster)} />
-            <IconButton icon="plus" onPress={() => handleBrowse(content.Poster)} />
+            <IconButton icon="web" onPress={() => handleBrowse(content.imdbID)} />
+            <IconButton icon="plus" onPress={() => handleAddList()} />
           </Card.Actions>
         </Card>
         : null}
@@ -76,7 +102,7 @@ export default function SearchSeries() {
         onDismiss={onDismissSnackBar}
         duration={3000}
       >
-        No results found.
+        {snackbarText}
       </Snackbar>
 
     </View>
