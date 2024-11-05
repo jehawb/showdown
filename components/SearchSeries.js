@@ -68,7 +68,8 @@ export default function SearchSeries() {
         <Card style={{ marginTop: 15, width: '95%' }}>
           <Card.Title
             title={content.Title}
-            titleVariant="titleMedium"
+            subtitle={content.Year}
+            titleVariant="titleLarge"
           />
           <Card.Content style={{ flexDirection: 'column', alignItems: "flex-start" }}>
             <View style={{ flexDirection: 'row', alignItems: "flex-start" }}>
@@ -87,6 +88,8 @@ export default function SearchSeries() {
                 style={{ flex: 1 }}>{content.Plot}
               </Text>
             </View>
+            <Text>Runtime: {content.Runtime}</Text>
+            {content.totalSeasons ? <Text>Seasons: {content.totalSeasons}</Text>: null}
             <Text>IMDB rating: {content.imdbRating}</Text>
             <Text>Metacritic score: {content.Metascore}</Text>
           </Card.Content>
