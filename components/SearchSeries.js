@@ -2,6 +2,10 @@ import { View, StyleSheet, Image } from "react-native"
 import { TextInput, Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
 import { useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
+import { app } from './firebaseConfig';
+import { getDatabase, ref, push } from "firebase/database";
+
+const database = getDatabase(app);
 
 export default function SearchSeries() {
   const [title, setTitle] = useState('');
@@ -46,8 +50,13 @@ export default function SearchSeries() {
     }
   }
 
-  const handleAddList = () => {
+  const handleToAddList = () => {
+    // Using state here would "lag behind" and construct listings with old data
+    // TODO: Change "USERNAME" to reflect the current user once users are implemented
+    const listing = {Title: content.Title, Poster: content.Poster, likes: ["USERNAME"], imdbID: content.imdbID};
+    //console.log(listing);
 
+    push(ref(database, 'listings/'), listing);
   }
 
   return (
@@ -95,7 +104,7 @@ export default function SearchSeries() {
           </Card.Content>
           <Card.Actions>
             <IconButton icon="web" onPress={() => handleBrowse(content.imdbID)} />
-            <IconButton icon="plus" onPress={() => handleAddList()} />
+            <IconButton icon="plus" onPress={() => handleToAddList()} />
           </Card.Actions>
         </Card>
         : null}
