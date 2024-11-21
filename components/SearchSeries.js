@@ -53,7 +53,8 @@ export default function SearchSeries() {
   const handleToAddList = () => {
     // Using state here would "lag behind" and construct listings with old data
     // TODO: Change "USERNAME" to reflect the current user once users are implemented
-    const listing = {Title: content.Title, Poster: content.Poster, likes: ["USERNAME"], imdbID: content.imdbID};
+    // const listing = {Title: content.Title, Poster: content.Poster, likes: ["USERNAME"], imdbID: content.imdbID};
+    const listing = {...content, likes: ["USERNAME"]};
     //console.log(listing);
 
     push(ref(database, 'listings/'), listing);
