@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image } from "react-native"
-import { TextInput, Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
+import { TextInput, Button, Card, Text, IconButton, Snackbar, Icon, PaperProvider } from "react-native-paper";
 import { useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 import { app } from './firebaseConfig';

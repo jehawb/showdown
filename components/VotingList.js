@@ -1,5 +1,5 @@
 import { StyleSheet, View, FlatList, Image } from 'react-native';
-import { Portal, Modal, Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
+import { Portal, Modal, Button, Card, Text, IconButton, Snackbar, Icon, PaperProvider } from "react-native-paper";
 import { useState, useEffect } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { app } from './firebaseConfig';
@@ -60,10 +60,12 @@ export default function VotingList() {
     }
   }
 
+  // TODO: Add a confirmation here, react paper native dialog for example.
   const deleteListing = (key) => {
     remove(ref(database, `listings/${key}`));
   }
 
+  // TODO: Swich View tags to PaperProvider
   return (
     <View style={styles.container}>
 
