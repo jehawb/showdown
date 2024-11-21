@@ -58,6 +58,8 @@ export default function SearchSeries() {
     //console.log(listing);
 
     push(ref(database, 'listings/'), listing);
+    setSnackbarText('Added to the voting list')
+    setVisible(true);
   }
 
   return (

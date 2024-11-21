@@ -1,27 +1,15 @@
 import { StyleSheet, View, FlatList, Image } from 'react-native';
-import { Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
+import { Portal, Modal, Button, Card, Text, IconButton, Snackbar, Icon } from "react-native-paper";
 import { useState, useEffect } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { app } from './firebaseConfig';
-import { getDatabase, ref, push, onValue } from 'firebase/database';
+import { getDatabase, ref, remove, update, set, onValue } from 'firebase/database';
 
 const database = getDatabase(app);
 
 export default function VotingList() {
 
   const [listings, setListings] = useState([]);
-
-  // useEffect(() => {
-  //   const itemsRef = ref(database, 'listings/');
-  //   onValue(itemsRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     if (data) {
-  //       setListings(Object.values(data));
-  //     } else {
-  //       setListings([]); // No items
-  //     }
-  //   })
-  // }, []);
 
   useEffect(() => {
     onValue(ref(database, 'listings/'), (snapshot) => {
@@ -48,12 +36,37 @@ export default function VotingList() {
     }
   }
 
-  const handleLike = async (item) => {
-    console.log(item.key);
+  const handleLike = async (listing) => {
+    let updatedListing = { ...listing };
+
+    if (listing.likes && listing.likes.includes("USERNAME")) {
+
+      delete updatedListing.key;
+      updatedListing.likes = updatedListing.likes.filter(name => name != "USERNAME");
+      update(ref(database, `listings/${listing.key}`), updatedListing);
+
+      // console.log("Removed key and USERNAME", updatedListing);
+    } else {
+
+      // Firebase likes to delete empty arrays.
+      if (!updatedListing.likes) {
+        updatedListing.likes = [];
+      }
+
+      updatedListing.likes.push("USERNAME");  // push() returns the length of the array not the array itself :(
+      update(ref(database, `listings/${listing.key}`), updatedListing);
+
+      // console.log("Added USERNAME", updatedListing);
+    }
+  }
+
+  const deleteListing = (key) => {
+    remove(ref(database, `listings/${key}`));
   }
 
   return (
     <View style={styles.container}>
+
       <FlatList
         data={listings}
         renderItem={({ item }) =>
@@ -76,12 +89,22 @@ export default function VotingList() {
               </View>
             </Card.Content>
             <Card.Actions>
+              <IconButton icon="trash-can-outline" iconColor="red" onPress={() => deleteListing(item.key)} />
               <IconButton icon="web" onPress={() => handleBrowse(item.imdbID)} />
               {/* If likes array even exists is checked first */}
-              {item.likes && item.likes.includes("USERNAME") ?
-                <IconButton icon="thumb-up" iconColor='orange' onPress={() => handleLike(item)} />
-                :
-                <IconButton icon="thumb-up-outline" onPress={() => handleLike(item)} />}
+              {
+                item.likes && item.likes.includes("USERNAME")
+                  ?
+                  <>
+                    <IconButton icon="thumb-up" iconColor="orange" onPress={() => handleLike(item)} />
+                    <Text>{item.likes.length}</Text>
+                  </>
+                  :
+                  <>
+                    <IconButton icon="thumb-up-outline" onPress={() => handleLike(item)} />
+                    {item.likes ? <Text>{item.likes.length}</Text> : <Text>0</Text>}
+                  </>
+              }
             </Card.Actions>
           </Card>
         }
