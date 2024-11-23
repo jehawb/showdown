@@ -10,6 +10,10 @@ const database = getDatabase(app);
 export default function WatchTimeCalendar() {
 
   const [dates, setDates] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
 
   // TODO: Setup user profiles
   const username = "USERNAME";
@@ -98,7 +102,7 @@ export default function WatchTimeCalendar() {
               </View>
             </Card.Content>
             <Card.Actions>
-              {/* <IconButton icon="trash-can-outline" iconColor="red" onPress={() => deleteListing(item.key)} /> */}
+              {/* <IconButton icon="trash-can-outline" iconColor="DeepPink" onPress={() => deleteDate(item.key)} /> */}
 
               {item.dislikes && item.dislikes.includes(username)
                 ?
@@ -117,7 +121,12 @@ export default function WatchTimeCalendar() {
         }
       />
 
-      <Button>BUTTON</Button>
+      <Portal>
+        <Modal visible={modalVisible} onDismiss={hideModal} style={{ backgroundColor: 'white', padding: 50 }}>
+          <Text>Example Modal.  Click outside this area to dismiss.</Text>
+        </Modal>
+      </Portal>
+      <Button onPress={showModal}>BUTTON</Button>
 
     </View>
   );

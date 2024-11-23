@@ -94,7 +94,7 @@ export default function VotingList() {
               </View>
             </Card.Content>
             <Card.Actions>
-              <IconButton icon="trash-can-outline" iconColor="red" onPress={() => deleteListing(item.key)} />
+              <IconButton icon="trash-can-outline" iconColor="DeepPink" onPress={() => deleteListing(item.key)} />
               <IconButton icon="web" onPress={() => handleBrowse(item.imdbID)} />
               {/* If likes array even exists is checked first */}
               {
