@@ -16,6 +16,9 @@ export default function SearchSeries() {
 
   const onDismissSnackBar = () => setVisible(false);
 
+  // TODO: Setup user profiles
+  const username = "USERNAME";
+
   const handleFetch = () => {
     setLoading(true);
     fetch(`https://www.omdbapi.com/?apikey=${process.env.EXPO_PUBLIC_OMDB_API_KEY}&t=${title}&plot=full`)
@@ -53,8 +56,8 @@ export default function SearchSeries() {
   const handleToAddList = () => {
     // Using state here would "lag behind" and construct listings with old data
     // TODO: Change "USERNAME" to reflect the current user once users are implemented
-    // const listing = {Title: content.Title, Poster: content.Poster, likes: ["USERNAME"], imdbID: content.imdbID};
-    const listing = {...content, likes: ["USERNAME"]};
+
+    const listing = {...content, likes: [username]};
     //console.log(listing);
 
     push(ref(database, 'listings/'), listing);

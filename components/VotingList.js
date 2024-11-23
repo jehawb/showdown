@@ -11,6 +11,9 @@ export default function VotingList() {
 
   const [listings, setListings] = useState([]);
 
+  // TODO: Setup user profiles
+  const username = "USERNAME";
+
   useEffect(() => {
     onValue(ref(database, 'listings/'), (snapshot) => {
       const data = snapshot.val();
@@ -39,10 +42,10 @@ export default function VotingList() {
   const handleLike = async (listing) => {
     let updatedListing = { ...listing };
 
-    if (listing.likes && listing.likes.includes("USERNAME")) {
+    if (listing.likes && listing.likes.includes(username)) {
 
       delete updatedListing.key;
-      updatedListing.likes = updatedListing.likes.filter(name => name != "USERNAME");
+      updatedListing.likes = updatedListing.likes.filter(name => name != username);
       update(ref(database, `listings/${listing.key}`), updatedListing);
 
       // console.log("Removed key and USERNAME", updatedListing);
@@ -53,7 +56,7 @@ export default function VotingList() {
         updatedListing.likes = [];
       }
 
-      updatedListing.likes.push("USERNAME");  // push() returns the length of the array not the array itself :(
+      updatedListing.likes.push(username);  // push() returns the length of the array not the array itself :(
       update(ref(database, `listings/${listing.key}`), updatedListing);
 
       // console.log("Added USERNAME", updatedListing);
@@ -95,7 +98,7 @@ export default function VotingList() {
               <IconButton icon="web" onPress={() => handleBrowse(item.imdbID)} />
               {/* If likes array even exists is checked first */}
               {
-                item.likes && item.likes.includes("USERNAME")
+                item.likes && item.likes.includes(username)
                   ?
                   <>
                     <IconButton icon="thumb-up" iconColor="orange" onPress={() => handleLike(item)} />
