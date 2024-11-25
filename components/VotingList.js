@@ -68,14 +68,13 @@ export default function VotingList() {
     remove(ref(database, `listings/${key}`));
   }
 
-  // TODO: Swich View tags to PaperProvider
   return (
     <View style={styles.container}>
 
       <FlatList
         data={listings}
         renderItem={({ item }) =>
-          <Card style={{ marginTop: 15, width: '95%' }}>
+          <Card style={{ marginTop: 15, width: 400 }}>
             <Card.Title
               title={item.Title}
               titleVariant="titleLarge"
@@ -94,7 +93,7 @@ export default function VotingList() {
               </View>
             </Card.Content>
             <Card.Actions>
-              <IconButton icon="trash-can-outline" iconColor="DeepPink" onPress={() => deleteListing(item.key)} />
+              <IconButton icon="trash-can-outline" iconColor="deeppink" onPress={() => deleteListing(item.key)} />
               <IconButton icon="web" onPress={() => handleBrowse(item.imdbID)} />
               {/* If likes array even exists is checked first */}
               {

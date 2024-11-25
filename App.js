@@ -3,6 +3,7 @@ import { PaperProvider, BottomNavigation, Text } from 'react-native-paper';
 import SearchSeries from './components/SearchSeries'; // It seems that BottomNavigation needs these component's as separate imports
 import VotingList from './components/VotingList';
 import WatchTimeCalendar from './components/WatchTimeCalendar';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
 
@@ -20,6 +21,7 @@ export default function App() {
   });
 
   return (
+    <SafeAreaProvider>
       <PaperProvider>
         <BottomNavigation
           navigationState={{ index, routes }}
@@ -27,5 +29,6 @@ export default function App() {
           renderScene={renderScene}
         />
       </PaperProvider>
+    </SafeAreaProvider>
   );
 }
