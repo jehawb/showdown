@@ -87,6 +87,11 @@ export default function VotingList({ username }) {
                     marginRight: 15
                   }}
                 />
+                <Text variant="bodyMedium"
+                numberOfLines={15}
+                ellipsizeMode="tail"
+                style={{ flex: 1 }}>{item.Plot}
+              </Text>
               </View>
             </Card.Content>
             <Card.Actions>
