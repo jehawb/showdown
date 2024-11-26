@@ -7,12 +7,9 @@ import { getDatabase, ref, remove, update, set, onValue } from 'firebase/databas
 
 const database = getDatabase(app);
 
-export default function VotingList() {
+export default function VotingList({ username }) {
 
   const [listings, setListings] = useState([]);
-
-  // TODO: Setup user profiles
-  const username = "USERNAME";
 
   useEffect(() => {
     onValue(ref(database, 'listings/'), (snapshot) => {

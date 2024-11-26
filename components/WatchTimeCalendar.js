@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const database = getDatabase(app);
 
-export default function WatchTimeCalendar() {
+export default function WatchTimeCalendar({ username }) {
 
   const [watchtimes, setWatchtimes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,9 +21,6 @@ export default function WatchTimeCalendar() {
 
   const toggleDatePicker = () => setShowDatePicker(!showDatePicker);
   const toggleTimePicker = () => setShowTimePicker(!showTimePicker);
-
-  // TODO: Setup user profiles
-  const username = "USERNAME";
 
   useEffect(() => {
     onValue(ref(database, 'watchtimes/'), (snapshot) => {
@@ -130,7 +127,6 @@ export default function WatchTimeCalendar() {
 
   return (
     <View style={styles.container}>
-
       <FlatList
         data={watchtimes}
         renderItem={({ item }) =>

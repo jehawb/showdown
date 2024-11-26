@@ -7,7 +7,7 @@ import { getDatabase, ref, push } from "firebase/database";
 
 const database = getDatabase(app);
 
-export default function SearchSeries() {
+export default function SearchSeries({ username }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
@@ -15,9 +15,6 @@ export default function SearchSeries() {
   const [snackbarText, setSnackbarText] = useState('');
 
   const onDismissSnackBar = () => setVisible(false);
-
-  // TODO: Setup user profiles
-  const username = "USERNAME";
 
   const handleFetch = () => {
     setLoading(true);

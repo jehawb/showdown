@@ -32,14 +32,14 @@ export default function App() {
   const onDismissSnackBar = () => setSnackbarVisible(false);
 
   const [routes] = useState([
-    { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar-clock', unfocusedIcon: 'calendar-clock-outline', props: { username: "TESTUSERNAME" } },
-    { key: 'search', title: 'Search', focusedIcon: 'movie-search', unfocusedIcon: 'movie-search-outline', props: { username: "TESTUSERNAME" } },
-    { key: 'list', title: 'List', focusedIcon: 'ballot', unfocusedIcon: 'ballot-outline', props: { username: "TESTUSERNAME" } },
+    { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar-clock', unfocusedIcon: 'calendar-clock-outline'},
+    { key: 'search', title: 'Search', focusedIcon: 'movie-search', unfocusedIcon: 'movie-search-outline'},
+    { key: 'list', title: 'List', focusedIcon: 'ballot', unfocusedIcon: 'ballot-outline'},
   ]);
   const renderScene = BottomNavigation.SceneMap({
-    calendar: WatchTimeCalendar,
-    search: SearchSeries,
-    list: VotingList,
+    calendar: () => <WatchTimeCalendar username={loginProfile.username} />,
+    search: () => <SearchSeries username={loginProfile.username} />,
+    list: () => <VotingList username={loginProfile.username} />,
   });
 
   useEffect(() => {
@@ -67,6 +67,10 @@ export default function App() {
       hideModal();
       setSnackbarText('Added new user profile.')
       setSnackbarVisible(true);
+      setNewProfile({
+        username: '',
+        password: ''
+      });
     }
     else {
       Alert.alert('Error', 'Error creating new profile.\nDid you give both the username and the password?');
