@@ -22,17 +22,19 @@ Developed using:
 
 External sources used:
 - omdbapi.com for Movies/Series API
+    - https://www.omdbapi.com/
 - Google Firebase for Realtime Database
+    - https://firebase.google.com/
+
+Other node packaged used:
+- react-native-community/datetimepicker
+    - https://docs.expo.dev/versions/latest/sdk/date-time-picker/
 
 ## .env file
 
 Project uses .env file for the connections to omdbapi.com and Firebase. Both the API key from ombdapi.com and a Realtime Database in Firebase needed for the app to work.
 
-https://www.omdbapi.com/
-
-https://firebase.google.com/
-
-Example .env file content:
+### Example .env file content:
 
 ```
 EXPO_PUBLIC_OMDB_API_KEY=abcd1234
@@ -44,3 +46,15 @@ EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=shoppingapp-91ede.appspot.com
 EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=1056464134052
 EXPO_PUBLIC_FIREBASE_APP_ID=1:10864638354052:web:e959565f804cacd0ed691
 ```
+
+## Usage
+
+The project isn't published or compiled as of november 2024.
+
+To start the expo server:
+
+```
+npx expo start
+```
+
+On your mobile phone you need a Expo Go app which can be found in app stores.

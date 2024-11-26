@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert } from "react-native"
-import { Portal, Modal, PaperProvider, BottomNavigation, Button, Snackbar, TextInput } from 'react-native-paper';
+import { Portal, Modal, PaperProvider, BottomNavigation, Button, Snackbar, TextInput, Text } from 'react-native-paper';
 import SearchSeries from './components/SearchSeries'; // It seems that BottomNavigation needs these component's as separate imports
 import VotingList from './components/VotingList';
 import WatchTimeCalendar from './components/WatchTimeCalendar';
@@ -32,9 +32,9 @@ export default function App() {
   const onDismissSnackBar = () => setSnackbarVisible(false);
 
   const [routes] = useState([
-    { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar-clock', unfocusedIcon: 'calendar-clock-outline'},
-    { key: 'search', title: 'Search', focusedIcon: 'movie-search', unfocusedIcon: 'movie-search-outline'},
-    { key: 'list', title: 'List', focusedIcon: 'ballot', unfocusedIcon: 'ballot-outline'},
+    { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar-clock', unfocusedIcon: 'calendar-clock-outline' },
+    { key: 'search', title: 'Search', focusedIcon: 'movie-search', unfocusedIcon: 'movie-search-outline' },
+    { key: 'list', title: 'List', focusedIcon: 'ballot', unfocusedIcon: 'ballot-outline' },
   ]);
   const renderScene = BottomNavigation.SceneMap({
     calendar: () => <WatchTimeCalendar username={loginProfile.username} />,
@@ -101,7 +101,9 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <PaperProvider>
-          <View style={{ marginTop: 200 }}>
+          <View style={styles.container}>
+            <Text variant="displayLarge">SHOWDOWN</Text>
+            <Text variant="headlineMedium">Please log in or create a new profile.</Text>
             <TextInput
               placeholder='Username'
               style={{ marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
@@ -116,7 +118,10 @@ export default function App() {
             <Button mode="contained" icon="head-plus-outline" onPress={showModal} style={styles.button}>Create new profile</Button>
           </View>
           <Portal>
-            <Modal visible={modalVisible} onDismiss={hideModal} style={{ backgroundColor: 'white', padding: 50 }}>
+            <Modal visible={modalVisible} onDismiss={hideModal} style={{
+              backgroundColor: 'white', padding: 50, alignItems: 'center',
+              justifyContent: 'center',
+            }}>
               <TextInput
                 placeholder='Username'
                 style={{ marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50
+    margin: 20
   },
   button: {
     margin: 10,
