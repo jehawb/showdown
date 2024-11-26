@@ -62,27 +62,27 @@ export default function WatchTimeCalendar({ username }) {
     hideModal();
   }
 
-  const handleLike = async (date) => {
-    let updatedDate = { ...date };
+  const handleLike = async (watchtime) => {
+    let updatedWatchtime = { ...watchtime };
 
     // Remove key and add possibly missing arrays
-    delete updatedDate.key;
-    if (!updatedDate.likes) {
-      updatedDate.likes = [];
+    delete updatedWatchtime.key;
+    if (!updatedWatchtime.likes) {
+      updatedWatchtime.likes = [];
     }
-    if (!updatedDate.dislikes) {
-      updatedDate.dislikes = []
+    if (!updatedWatchtime.dislikes) {
+      updatedWatchtime.dislikes = [];
     }
 
-    if (!date.likes.includes(username)) {
+    if (!updatedWatchtime.likes.includes(username)) {
 
-      updatedDate.likes.push(username);
+      updatedWatchtime.likes.push(username);
 
-      if (updatedDate.dislikes.includes(username)) {
-        updatedDate.dislikes = updatedDate.dislikes.filter(name => name != username);
+      if (updatedWatchtime.dislikes.includes(username)) {
+        updatedWatchtime.dislikes = updatedWatchtime.dislikes.filter(name => name != username);
       }
 
-      update(ref(database, `watchtimes/${date.key}`), updatedDate);
+      update(ref(database, `watchtimes/${watchtime.key}`), updatedWatchtime);
 
     }
   }
@@ -96,10 +96,10 @@ export default function WatchTimeCalendar({ username }) {
       updatedWatchtime.likes = [];
     }
     if (!updatedWatchtime.dislikes) {
-      updatedWatchtime.dislikes = []
+      updatedWatchtime.dislikes = [];
     }
 
-    if (!watchtime.dislikes.includes(username)) {
+    if (!updatedWatchtime.dislikes.includes(username)) {
 
       updatedWatchtime.dislikes.push(username);
 
