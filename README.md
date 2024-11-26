@@ -1,12 +1,38 @@
 # Showdown
 
+## Description
+
+This is a small solo project for Haaga-Helia University of Applied Sciences autumn 2024 Mobile Programming course.
+
+Meant to help a small group to arrange time for watching movies/series together and to decide what to watch.
+
+### Features
+
+- User profiles
+- Search for movies/series
+- Choosing dates from calendar
+- Voting for watchtimes and movies/series
+
+## Used Technologies
+
+Developed using:
+- Expo
+- React Native
+- React Native Paper
+
+External sources used:
+- omdbapi.com for Movies/Series API
+- Google Firebase for Realtime Database
+
 ## .env file
+
+Project uses .env file for the connections to omdbapi.com and Firebase. Both the API key from ombdapi.com and a Realtime Database in Firebase needed for the app to work.
 
 https://www.omdbapi.com/
 
 https://firebase.google.com/
 
-Example content:
+Example .env file content:
 
 ```
 EXPO_PUBLIC_OMDB_API_KEY=abcd1234
