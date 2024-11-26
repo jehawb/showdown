@@ -44,12 +44,20 @@ export default function WatchTimeCalendar() {
 
   const addWatchTime = () => {
 
+    
+    // const newWatchtime = {
+    //   date: formatDate(selectedDate),
+    //   time: formatTime(selectedTime),
+    //   day: getDayOfWeek(selectedDate),
+    //   likes: [username, "Bob"],
+    //   dislikes: ["Katy", "Perry"]
+    // };
+
     const newWatchtime = {
       date: formatDate(selectedDate),
       time: formatTime(selectedTime),
       day: getDayOfWeek(selectedDate),
-      likes: [username, "Bob"],
-      dislikes: ["Katy", "Perry"]
+      likes: [username]
     };
 
     push(ref(database, 'watchtimes/'), newWatchtime);
