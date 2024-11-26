@@ -1,4 +1,4 @@
-import { useState, } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert } from "react-native"
 import { Portal, Modal, PaperProvider, BottomNavigation, Button, Snackbar, TextInput } from 'react-native-paper';
 import SearchSeries from './components/SearchSeries'; // It seems that BottomNavigation needs these component's as separate imports
@@ -42,8 +42,27 @@ export default function App() {
     list: VotingList,
   });
 
+  useEffect(() => {
+    onValue(ref(database, 'profiles/'), (snapshot) => {
+      const data = snapshot.val();
+      const keys = Object.keys(data);
+      // Combine keys with data 
+      const dataWithKeys = Object.values(data).map((obj, index) => {
+        return { ...obj, key: keys[index] }
+      });
+
+      setProfiles(dataWithKeys);
+    })
+  }, []);
+
   const createNewProfile = () => {
-    if (newProfile.username && newProfile.password) {
+    if (newProfile.username != '' && newProfile.password != '') {
+
+      if (profiles.some(profile => profile.username === newProfile.username)) {
+        Alert.alert('Error', 'Username in use already.\nPlease choose another username.');
+        return;
+      }
+
       push(ref(database, 'profiles/'), newProfile);
       hideModal();
       setSnackbarText('Added new user profile.')
@@ -55,7 +74,11 @@ export default function App() {
   }
 
   const handleLogIn = () => {
-    setLoggedIn(!loggedIn);
+    if (profiles.some(profile => profile.username === loginProfile.username && profile.password === loginProfile.password)) {
+      setLoggedIn(true);
+    } else {
+      Alert.alert('Error', 'Error logging in.\nPlease check the username and the password.');
+    }
   }
 
   if (loggedIn) {
@@ -75,6 +98,16 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider>
           <View style={{ marginTop: 200 }}>
+            <TextInput
+              placeholder='Username'
+              style={{ marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
+              onChangeText={(username) => setLoginProfile({ ...loginProfile, username: username })}
+              value={loginProfile.username} />
+            <TextInput
+              placeholder='Password'
+              style={{ marginTop: 5, marginBottom: 5, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
+              onChangeText={(password) => setLoginProfile({ ...loginProfile, password: password })}
+              value={loginProfile.password} />
             <Button mode="contained" icon="login" onPress={handleLogIn} title="Log In" style={styles.button}>Log In</Button>
             <Button mode="contained" icon="head-plus-outline" onPress={showModal} style={styles.button}>Create new profile</Button>
           </View>
