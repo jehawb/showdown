@@ -16,7 +16,7 @@ Meant to help a small group to arrange time for watching movies/series together 
 ## Used Technologies
 
 Developed using:
-- Expo
+- Expo Go
 - React Native
 - React Native Paper
 
